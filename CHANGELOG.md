@@ -20,6 +20,39 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.4.34] - 2018-09-25
+
+### Fixed
+- merged #1632 - not showing bulk columns on preview page;
+- merged #1617 - don't mark required_with and required_if with asterisks;
+- merged #1642 - where ```getRelationModelInstances()``` returns array instead of object;
+- merged #1643 - new script for ```address``` field type;
+- merged #1614 - show Remove All Filters button even for simple filters;
+
+
+## [3.4.33] - 2018-09-05
+
+### Fixed
+- merged #1625 - docblocks everywhere;
+- replaced ```or``` with ```??``` for Laravel 5.7 compatibility;
+
+
+## [3.4.32] - 2018-09-04
+
+### Added
+- merged #1609 - bulk actions;
+
+### Fixed
+- Spanish translation;
+- Italian translation;
+
+
+## [3.4.31] - 2018-08-28
+
+### Fixed
+- merged #1606 fixes #1605 - ```upload_multiple``` column type fix disk;
+
+
 ## [3.4.30] - 2018-08-10
 
 ### Added
