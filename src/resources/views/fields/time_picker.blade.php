@@ -1,6 +1,6 @@
 <!-- bootstrap timepicker input -->
 <div @include('crud::inc.field_wrapper_attributes') >
-    <input type="hidden" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
+    <input type="text" name="{{ $field['name'] }}" value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}">
     <label>{!! $field['label'] !!}</label>
     <div class="input-group bootstrap-timepicker timepicker">
         <input
@@ -44,39 +44,69 @@
             $('[data-bs-timepicker]').each(function(){
 
                 var $fake = $(this),
-                $field = $fake.parents('.form-group').find('input[type="hidden"]'),
-                $customConfig = $.extend({
-                    showInputs: 'true'
-                }, $fake.data('bs-timepicker'));
-                $picker = $fake.bootstrapTP($customConfig);
+                $field = $fake.parents('.form-group').find('input[type="text"]'),
+                $customConfig = $.extend({}, $fake.data('bs-timepicker'));
+                $picker = $fake.timepicker($customConfig);
 
                 var $existingVal = $field.val();
 
-                if( $existingVal.length ){
-                    $fake.val($existingVal);
-                    $picker.bootstrapTP('setTime', $existingVal);
-                }
-
-               $fake.focus(function (){
-                $fake.timepicker('showWidget');
-                });
-
-               $picker.on('show hide change', function(e){
-                    if( e.date ){
-                        var sqlTime = e.format('H:i:s');
+                //Sanitize the existing time from the DB before setting timepicker, first check if were using 24 hour time
+                if( $customConfig.showMeridian === false ){
+                        //if yes then were all good
+                        $fake.timepicker('setTime', $existingVal);
                     } else {
-                        try {
-                            var sqlTime = $fake.val();
-                        } catch(e){
-                            if( $fake.val() ){
-                                PNotify.removeAll();
-                                new PNotify({
-                                    title: 'Whoops!',
-                                    text: 'Sorry we did not recognise that time format, please make sure it uses a h:m:s combination',
-                                    type: 'error',
-                                    icon: false
-                                });
+                        //if not then lets convert it before storing it
+                        var $existingValM = $existingVal.toString().substring(0, 2);
+                        if( $existingValM < 12 ){
+                            //its AM
+                            $fake.timepicker('setTime', $existingVal);
+                        } else {
+                            //its PM
+                            $existingValM = $existingValM - 12;
+                            $existingValM = $existingValM.toString() + $existingVal.substring(2, 8) + " PM";
+                            $fake.timepicker('setTime', $existingValM);
+                        }       
+                    }  
+                    
+                $fake.focus(function (){
+                    $fake.timepicker('showWidget');
+                });
+                
+                $fake.on('changeTime.timepicker', function(e) {
+                    try {
+                        //Santize the updated time before setting the field
+                        var tpHour = e.time.hours.toString().length === 1 ? '0' + e.time.hours : e.time.hours;
+                        var tpMin = e.time.minutes.toString().length === 1 ? '0' + e.time.minutes : e.time.minutes;
+                        var tpSec = e.time.seconds.toString().length === 1 ? '0' + e.time.seconds : e.time.seconds;
+
+                        //check if were using 24 hour time
+                        if( $customConfig.showMeridian === false ){
+                            //if yes then were all good
+                            var sqlTime = tpHour + ':' + tpMin + ':' + (isNaN(tpSec) ? '00' : tpSec);
+                        } else { 
+                            //if not then lets convert it before storing it
+                            console.log('Update using AM/PM time');
+                            if (e.time.hours == "12" && e.time.meridian == "AM" ){
+                                //fix if its 12 AM
+                                var sqlTime = '00:' + tpMin + ':' + (isNaN(tpSec) ? '00' : tpSec);
+                            } else if (e.time.hours == "12" && e.time.meridian == "PM") {
+                                //fix if its 12 PM
+                                var sqlTime = tpHour + ':' + tpMin + ':' + (isNaN(tpSec) ? '00' : tpSec);
+                            } else {
+                                //otherwise check for AM/PM and convert
+                                var tpHourF = e.time.meridian == "PM" ? e.time.hours + 12: e.time.hours;
+                                var sqlTime = tpHourF + ':' + tpMin + ':' + (isNaN(tpSec) ? '00' : tpSec);
                             }
+                        }      
+                    } catch(e){
+                        if( $fake.val() ){
+                            PNotify.removeAll();
+                            new PNotify({
+                                title: 'Whoops!',
+                                text: 'Sorry we did not recognise that time format, please make sure it uses a h:m:s combination',
+                                type: 'error',
+                                icon: false
+                            });
                         }
                     }
                     $field.val(sqlTime);
