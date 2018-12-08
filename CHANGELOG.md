@@ -20,6 +20,145 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
+## [3.5.10] - 2018-12-05
+
+- merged #1741 - deprecated ```CrudRequest``` uses ```backpack_auth()```;
+- upgraded PHPUnit to v7;
+
+
+## [3.5.9] - 2018-09-28
+
+- fixed #1732 - added support for laravel/translatable 3.x;
+
+
+## [3.5.8] - 2018-09-28
+
+- fixed #1730 - export buttons causing issues; broken list view;
+
+## [3.5.7] - 2018-09-27
+
+- fixed #1730 - filtered list view count wasn't quite right;
+
+## [3.5.6] - 2018-09-27
+
+- fixed #1728;
+
+## [3.5.5] - 2018-09-27
+
+- fixed #1723 - export buttons look bad when bulk buttons are missing;
+
+## [3.5.4] - 2018-09-26
+
+- fixed #1723 - export buttons now showing;
+- fixed #1535 - orderBy did not get respected;
+
+## [3.5.3] - 2018-09-23
+
+- fixed clone button using POST method for AJAX;
+- CRUD buttons sometimes extended beyond table;
+
+## [3.5.2] - 2018-09-22
+
+- Travis CI config file changes;
+
+
+## [3.5.1] - 2018-09-22
+
+- composer.json change, requiring Backpack/Base 1.0.x;
+
+
+## [3.5.0] - 2018-09-22
+
+### BREAKING
+- #1535 - orderBy gets ignored when the user clicks on a column heading to reoder the datatable;
+- #1658 - model function button did not pass $crud to button;
+- #1680 - Backpack checks that CrudTrait is used on the Model; otherwise it throws a 500 error with a clear message;
+
+### Added
+- #1675 - design facelift for the list view - a lot cleaner;
+- #1516 - setters and getters for the current operation;
+- #1527 - custom titles, headings and subheadings;
+- #1518 - CrudPanel class is now macroable;
+- #1687 - ```select2_nested``` field type;
+- #1703 - ```visibleInTable``` option to columns;
+- #1703 - ```visibleInExport``` option to columns;
+- #1706 - added ```visibleInShow``` option to columns;
+- #1704 - added ```orderLogic``` option for columns;
+- #1694 - ```options``` option to ```select```, ```select2```, ```select_multiple```, ```select2_multiple```, that allows developers to filter or order the options shown, using a scope or custom query;
+- #1695 - added ```select_and_order``` field type;
+- #1708 - added ```Clone``` operation;
+- #1712 - added ```address_google``` field type;
+- #1674 - you can now pass parameters to ```model_function``` and ```model_function_attribute``` column types; 
+- #1484 - added dependant select2s with ajax;
+- #1484 - added ```method``` attribute to ajax select2s;
+- #1484 - added ```dependencies``` attribute to ajax select2s;
+- #1702 - added ```persistent_table``` functionality, and save state datatables;
+
+### Fixed
+- #1390 - using our own helper ```mb_ucfirst()``` instead of ```ucfirst()```;
+- #791 - could not revert changes made in fake field holders;
+- #1712 - renamed ```address``` field type to ```address_algolia```; alias keeps backwards-compatibility;
+- #1714 - autoset getting tables now happens only once;
+- #1692 - we can now use arrays for field names, like ```category[0][name]```, the only thing that needed to be fixed was the ```old()``` value which did not work;
+
+----
+
+## [3.4.43] - 2018-11-21
+
+## Fixed
+- #1717 - French translation;
+
+
+## [3.4.42] - 2018-11-20
+
+## Fixed
+- #870 - error when adding tabs only on update, or only on create;
+
+
+## [3.4.41] - 2018-11-14
+
+## Added
+- #1592 - ```options``` attribute to let developers customize ckeditor;
+
+
+## [3.4.40] - 2018-11-11
+
+### Added
+- #1587 - support for temporaryUrl to upload field type;
+- #1693 - Turkish language translations;
+
+
+### Removed
+- obsolete TODO time_picker field; never used;
+
+
+## [3.4.39] - 2018-11-09
+
+### Fixed
+- #1540 fixes #1539 - what happens if actions don't exist because the controller is overwritten;
+- fixes #1678 - ```textarea``` column type has default search logic;
+- fixes #1676 - pagination in ```select2_from_ajax``` and ```select2_from_ajax_multiple``` fields;
+- fixes #509 using #1689 - assets got loaded twice if using tabs;
+- fixes #1421 using #1690 - user can now clear inputs, receive validation error and inputs will still be cleared;
+
+
+## [3.4.38] - 2018-10-26
+
+### Added
+- "default" for select field type;
+
+### Fixed
+- merged #1651 fixes #1640 - column width when resizing window or sidebar, on unresponsive crud table;
+- fixed #1648 - select_from_array column can now display multiple entries;
+
+
+## [3.4.37] - 2018-10-24
+
+### Fixed
+- spanish translation;
+- updated datetimepicker version in ```datetime_picker``` field;
+
+
 ## [3.4.36] - 2018-10-15
 
 ### Fixed
