@@ -2,7 +2,7 @@
 
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
-	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
+	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu">
 		<div class="form-group backpack-filter m-b-0">
@@ -80,7 +80,7 @@
 
 				// add filter to URL
 				crud.updateUrl(new_url);
-
+				
 				// mark this filter as active in the navbar-filters
 				if (URI(new_url).hasQuery('{{ $filter->name }}', true)) {
 					$('li[filter-name={{ $filter->name }}]').removeClass('active').addClass('active');
